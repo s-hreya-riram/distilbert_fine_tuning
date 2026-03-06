@@ -5,3 +5,6 @@ torch
 scikit-learn
 numpy
 matplotlib
+openai
+dotenv
+requests

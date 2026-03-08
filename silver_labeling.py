@@ -3,7 +3,7 @@ import time
 import pandas as pd
 from openai import OpenAI
 from dotenv import load_dotenv
-
+from constants import SAMPLED_DATA_PATH, LABELED_DATA_PATH
 
 SYSTEM_PROMPT = """You are an ESG analyst classifying corporate sustainability 
 statements. You are precise, consistent, and base judgments only on 
@@ -49,10 +49,10 @@ def label_sentence(text: str, retries: int = 3) -> dict:
             time.sleep(2 ** attempt)   # exponential backoff
 
 
-def label_batch(df: pd.DataFrame, output_path: str = "data/climatebert/labeled/sentences_labeled.csv") -> pd.DataFrame:
+def label_batch(df: pd.DataFrame, output_path) -> pd.DataFrame:
     labels, reasons, confidences = [], [], []
 
-    # --- Run a sanity check on first 20 before committing to full batch ---
+    # Run a sanity check on first 20 before committing to full batch
     print("Running sanity check on first 20 rows...")
     for i, row in df.head(20).iterrows():
         result = label_sentence(row["text"])
@@ -61,7 +61,6 @@ def label_batch(df: pd.DataFrame, output_path: str = "data/climatebert/labeled/s
         confidences.append(result.get("confidence", None))
         print(f"[{i+1}/20] {result['label']:<12} | {row['text'][:80]}...")
 
-    print("\n--- Sanity check complete. Review above before continuing. ---")
     proceed = input("Proceed with full batch? (y/n): ")
     if proceed.lower() != "y":
         print("Aborted.")
@@ -104,5 +103,5 @@ def label_batch(df: pd.DataFrame, output_path: str = "data/climatebert/labeled/s
 
 
 if __name__ == "__main__":
-    df = pd.read_csv("data/climatebert/raw/sentences_raw.csv")
-    labeled = label_batch(df)
+    df = pd.read_csv(SAMPLED_DATA_PATH)
+    labeled = label_batch(df, LABELED_DATA_PATH)

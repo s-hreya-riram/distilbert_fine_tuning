@@ -1,6 +1,7 @@
 import pandas as pd
 from datasets import load_dataset
 import hashlib
+from constants import SAMPLED_DATA_PATH
 
 def load_raw(dataset_name: str = "climatebert/climate_detection") -> pd.DataFrame:
     """
@@ -129,4 +130,4 @@ if __name__ == "__main__":
     sampled_df = sample(deduplicated_df)
 
     # Export the final sampled DataFrame to CSV
-    export(sampled_df, "data/climatebert/raw/sentences_raw.csv")
+    export(sampled_df, SAMPLED_DATA_PATH)

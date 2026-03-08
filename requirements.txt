@@ -1,6 +1,8 @@
 datasets
 pandas
+accelerate
 transformers
+transformers[torch]
 torch
 scikit-learn
 numpy

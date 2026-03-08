@@ -10,3 +10,5 @@ matplotlib
 openai
 dotenv
 requests
+fastapi
+uvicorn
